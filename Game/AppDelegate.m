@@ -3,10 +3,13 @@
 //  Game
 //
 //  Created by Celleus on 2016/05/26.
-//  Copyright © 2016年 Celleus. All rights reserved.
+//  Copyright © 2016年 Game. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import "DatabaseTable.h"
+#import "RootViewController.h"
+
 
 @interface AppDelegate ()
 
@@ -17,6 +20,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.window makeKeyAndVisible];
+    
+    DatabaseTable *database = [[DatabaseTable alloc] init];
+    [database createTable];
+    
+    self.window.rootViewController = [[RootViewController alloc] init];
+    
     return YES;
 }
 

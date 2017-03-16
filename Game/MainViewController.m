@@ -8,14 +8,14 @@
 
 #import "MainViewController.h"
 #import "GameViewController.h"
+#import "PairingViewController.h"
 
 // admob
-#import "GADBannerView.h"
 #import "AppDelegate.h"
 
-@interface MainViewController (){
+@interface MainViewController () <MEMELibDelegate> {
     GameViewController *gameViewController;
-    GADBannerView *gadBannerView;
+    PairingViewController *pairingViewController;
 }
 
 @end
@@ -34,30 +34,24 @@
 - (void)loadView {
     [super loadView];
     
+    [MEMELib setAppClientId:@"573253799739733" clientSecret:@"n7ic2mhr01j4wvomur27g98lre233vlf"];
+    [MEMELib sharedInstance].delegate = self;
+    [[MEMELib sharedInstance] addObserver:self forKeyPath:@"centralManagerEnabled" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
     self.view.backgroundColor = [UIColor colorWithRed:0.93 green:0.88 blue:0.8 alpha:1];
     
-    //**************************************************
-    // Admob
-    //**************************************************
-    gadBannerView = [[GADBannerView alloc]
-                     initWithFrame:CGRectMake(0.0,
-                                              20.0,
-                                              GAD_SIZE_320x50.width,
-                                              GAD_SIZE_320x50.height)];
-    
-    gadBannerView.adUnitID = ADMOB_ID_MAIN;
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    gadBannerView.rootViewController = appDelegate.window.rootViewController;
-    [self.view addSubview:gadBannerView];
-    [gadBannerView loadRequest:[GADRequest request]];
-    
     // タイトル
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 120, 320, 50)];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 120, self.view.frame.size.width, 50)];
     title.backgroundColor = [UIColor clearColor];
     title.textColor = [UIColor colorWithRed:0.4 green:0.3 blue:0.1 alpha:1];
     title.textAlignment = NSTextAlignmentCenter;
     title.font = [UIFont fontWithName:@"Helvetica-Bold" size:30];
-    title.text = NSLocalizedString(@"app_name", nil);
+    title.text = @"スーパーミーム";
     [self.view addSubview:title];
     
     CGFloat paddingY = 280;
@@ -85,17 +79,24 @@
     game.layer.cornerRadius = 8;
     game.clipsToBounds = YES;
     game.font = [UIFont fontWithName:@"Helvetica" size:18];
-    [game setTitle:NSLocalizedString(@"button_game_start", nil) forState:UIControlStateNormal];
+    [game setTitle:@"ゲームスタート" forState:UIControlStateNormal];
     [game setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [game setTitle:NSLocalizedString(@"button_game_start", nil) forState:UIControlStateHighlighted];
+    [game setTitle:@"ゲームスタート" forState:UIControlStateHighlighted];
     [game addTarget:self action:@selector(game:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:game];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    // ペアリング
+    UIButton *pearing = [[UIButton alloc] init];
+    pearing.frame = CGRectMake(70, paddingY + 50 + 70*2, self.view.frame.size.width - 70*2, 50);
+    pearing.backgroundColor = [UIColor colorWithRed:1 green:0.2 blue:0.2 alpha:1];
+    pearing.layer.cornerRadius = 8;
+    pearing.clipsToBounds = YES;
+    pearing.font = [UIFont fontWithName:@"Helvetica" size:18];
+    [pearing setTitle:@"ペアリング" forState:UIControlStateNormal];
+    [pearing setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [pearing setTitle:@"ペアリング" forState:UIControlStateHighlighted];
+    [pearing addTarget:self action:@selector(pearing:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:pearing];
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,9 +107,57 @@
 
 - (void)game:(id)sender {
     gameViewController = [[GameViewController alloc] init];
-    gameViewController.view.frame = self.view.frame;
     gameViewController.mainViewController = self;
-    [self.view addSubview:gameViewController.view];
+    [self presentViewController:gameViewController animated:NO completion:^(void){}];
+}
+
+- (void)pearing:(id)sender {
+    pairingViewController = [[PairingViewController alloc] init];
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:pairingViewController];
+    [self presentViewController:nvc animated:NO completion:^(void){}];
+}
+
+//**************************************************
+// jins meme delegate
+//**************************************************
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    NSLog(@"observeValueForKeyPath:%@",keyPath);
+}
+
+- (void) memeAppAuthorized:(MEMEStatus)status
+{
+    NSLog(@"memeAppAuthorized");
+}
+
+- (void)memePeripheralFound:(CBPeripheral *)peripheral withDeviceAddress:(NSString *)address
+{
+    NSLog(@"memePeripheralFound:%@",[peripheral.identifier UUIDString]);
+    
+    if ([pairingViewController.peripherals indexOfObject:peripheral] == NSNotFound) {
+        
+        [pairingViewController.peripherals addObject:peripheral];
+        
+        [pairingViewController.peripheralListTableView reloadData];
+    }
+}
+
+- (void)memePeripheralConnected:(CBPeripheral *)peripheral
+{
+    NSLog(@"memePeripheralConnected:%@",[peripheral.identifier UUIDString]);
+    
+    [pairingViewController dismissViewControllerAnimated:NO completion:nil];
+    
+    [[MEMELib sharedInstance] startDataReport];
+}
+
+- (void)memeRealTimeModeDataReceived:(MEMERealTimeData *)data
+{
+    //NSLog(@"data:%@",data);
+    if (gameViewController) {
+        [gameViewController memeRealTimeModeDataReceived:data];
+    }
 }
 
 @end

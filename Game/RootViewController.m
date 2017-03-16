@@ -32,6 +32,10 @@
     mainViewController = [[MainViewController alloc] init];
     mainViewController.view.frame = self.view.frame;
     [self.view addSubview:mainViewController.view];
+    
+    // ナビボタンの色
+    [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.4 green:0.3 blue:0.1 alpha:1]; //文字色
+    [UINavigationBar appearance].titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor colorWithRed:0.4 green:0.3 blue:0.1 alpha:1]}; //タイトルの色
 }
 
 - (void)viewDidLoad

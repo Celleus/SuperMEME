@@ -9,54 +9,22 @@
 #ifndef SosuuTap_Const_h
 #define SosuuTap_Const_h
 
-#define DEBUG_LEVEL         3
-#define DEBUG_DEV           1
-#define DEBUG_PRE           2
-#define DEBUG_RELEASE       3
+#define FPS 50.0f           // FPS（画面の更新速度）
 
-#define APP_ID                          @"909399683"
-
-//**************************************************
-// AD
-//**************************************************
-
-#define ADMOB_ID_APP_TOP                @"ca-app-pub-8440214849168605/1669681978"
-#define ADMOB_ID_MAIN                   @"ca-app-pub-8440214849168605/9829332779"
-#define ADMOB_ID_GAMEOVER               @"ca-app-pub-8440214849168605/2306065975"
+#define MEME_X 0.2          // キャラの横軸移動速度
+#define MAX_VX 6            // キャラの最大横軸移動速度
+#define Y 4                 // キャラの落下速度
+#define MEME_JUMP_POW 0.06   //　MEMEによるキャラのジャンプ力
+#define TOUCH_JUMP_POW 2    //　タッチによるキャラのジャンプ力
+#define MAX_JUMP_COUNT 1    //　キャラの最大連続ジャンプ数
+#define PLAYER_SIZE 40      // キャラのサイズ（足場の当たり判定に影響）
 
 //**************************************************
-// Analytics
-//**************************************************
-
-#define GAI_TRACKING_ID                 @"UA-50288083-15"
-
-//**************************************************
-// file
+// DB
 //**************************************************
 
 #define FILE_PATH_DOCUMENT_DB           @"DocumentDB"
 #define FILE_PATH_CACHE_DB              @"CacheDB"
-#define FILE_PATH_CACHE_IMAGE           @"CacheImage"
-#define FILE_PATH_CACHE_DATA            @"CacheData"
-#define FILE_PATH_TMP_DATA              @"TmpData"
-
-//**************************************************
-// layout
-//**************************************************
-#define LAYOUT_STATUS_BAR_HEIGHT            20.f
-#define LAYOUT_NAVI_BAR_HEIGHT              44.0f
-#define LAYOUT_AD_HEIGHT                    50.0f
-#define LAYOUT_TAB_BAR_HEIGHT               48.0f
-
-//**************************************************
-// twitter
-//**************************************************
-#define TWITTER_CUNSUMER_KEY            @"Rd6jBl12ECwQrdnCkI4PENjIO"
-#define TWITTER_CUNSUMER_SECRET         @"PJkGs3iHg7if9BOv8nD2jTTQE769EqhWuX0PvcsyLbWNlFJ7rN"
-
-//**************************************************
-// facebook
-//**************************************************
-#define FACEBOOK_APP_ID                 @"582559715188465"
+#define DB_NAME                         @"main"
 
 #endif

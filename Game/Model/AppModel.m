@@ -19,7 +19,6 @@ static FMDatabase *caches = nil;
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
     NSString *dir = [paths objectAtIndex:0];
-    dir = [dir stringByAppendingPathComponent:APP_ID];
     dir = [dir stringByAppendingPathComponent:FILE_PATH_DOCUMENT_DB];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -27,7 +26,7 @@ static FMDatabase *caches = nil;
         [fileManager createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
-    document = [FMDatabase databaseWithPath:[dir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.db",APP_ID]]];
+    document = [FMDatabase databaseWithPath:[dir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.db",DB_NAME]]];
     
     return document;
 }
@@ -37,7 +36,6 @@ static FMDatabase *caches = nil;
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains( NSCachesDirectory, NSUserDomainMask, YES );
     NSString *dir = [paths objectAtIndex:0];
-    dir = [dir stringByAppendingPathComponent:APP_ID];
     dir = [dir stringByAppendingPathComponent:FILE_PATH_CACHE_DB];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -45,7 +43,7 @@ static FMDatabase *caches = nil;
         [fileManager createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
-    caches = [FMDatabase databaseWithPath:[dir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.db",APP_ID]]];
+    caches = [FMDatabase databaseWithPath:[dir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.db",DB_NAME]]];
     
     return caches;
 }

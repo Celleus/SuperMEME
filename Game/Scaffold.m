@@ -1,9 +1,9 @@
 //
 //  Scaffold.m
-//  RunAction
+//  Game
 //
 //  Created by Celleus on 2014/06/17.
-//  Copyright (c) 2014年 RunAction. All rights reserved.
+//  Copyright (c) 2014年 Game. All rights reserved.
 //
 
 #import "Scaffold.h"

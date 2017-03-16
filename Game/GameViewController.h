@@ -14,4 +14,8 @@
 
 @property (nonatomic,strong) MainViewController *mainViewController;
 
+- (void)clearScaffold;
+- (void)restart;
+- (void)memeRealTimeModeDataReceived:(MEMERealTimeData *)data;
+
 @end

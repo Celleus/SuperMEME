@@ -1,9 +1,9 @@
 //
 //  Player.m
-//  Circle
+//  Game
 //
 //  Created by Celleus on 2014/06/11.
-//  Copyright (c) 2014年 Circle. All rights reserved.
+//  Copyright (c) 2014年 Game. All rights reserved.
 //
 
 #import "Player.h"
@@ -14,24 +14,73 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor colorWithRed:1 green:0.7 blue:0.2 alpha:1];
-        self.layer.cornerRadius = frame.size.width / 2;
-        self.clipsToBounds = YES;
-        
-        
-        self.speedX = 4;
-        self.speedY = 4;
+
+        self.speedY = Y;
         
         self.speedVX = 0;
         self.speedVY = 0;
         
-        self.jumpPow = 2;
-        self.jumpCountMax = 1;
+        self.jumpPow = TOUCH_JUMP_POW;
+        self.jumpCountMax = MAX_JUMP_COUNT;
         self.jumpCount = self.jumpCountMax;
         
         self.flag = YES;
     }
     return self;
+}
+
+- (void)setPlayserIamge:(int)image {
+    self.tag = image;
+    
+    if (image != PLAYER_MOVE_L && image != PLAYER_MOVE_R) {
+        [self stopAnimating];
+    }
+    
+    if (image == PLAYER_STOP) {
+        if (self.speedVX <= 0) {
+            self.image = [UIImage imageNamed:@"11.png"];
+        }
+        else {
+            self.image = [UIImage imageNamed:@"1.png"];
+        }
+    }
+    else if (image == PLAYER_MOVE_L) {
+        self.animationImages = @[[UIImage imageNamed:@"11.png"],[UIImage imageNamed:@"12.png"]];
+        self.animationRepeatCount = 0;
+        self.animationDuration = 0.2;
+        [self startAnimating];
+    }
+    else if (image == PLAYER_MOVE_R) {
+    
+        self.animationImages = @[[UIImage imageNamed:@"1.png"],[UIImage imageNamed:@"2.png"]];
+        self.animationRepeatCount = 0;
+        self.animationDuration = 0.2;
+        [self startAnimating];
+    }
+    else if (image == PLAYER_BLOCK) {
+        if (self.speedVX <= 0) {
+            self.image = [UIImage imageNamed:@"13.png"];
+        }
+        else {
+            self.image = [UIImage imageNamed:@"3.png"];
+        }
+    }
+    else if (image == PLAYER_JUMP) {
+        if (self.speedVX <= 0) {
+            self.image = [UIImage imageNamed:@"14.png"];
+        }
+        else {
+            self.image = [UIImage imageNamed:@"4.png"];
+        }
+    }
+    else if (image == PLAYER_DIE) {
+        if (self.speedVX <= 0) {
+            self.image = [UIImage imageNamed:@"15.png"];
+        }
+        else {
+            self.image = [UIImage imageNamed:@"5.png"];
+        }
+    }
 }
 
 
